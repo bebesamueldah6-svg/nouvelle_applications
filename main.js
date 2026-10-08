@@ -89,9 +89,20 @@
     if (e.key === "Escape" && !lightbox.hidden) closeLightbox();
   });
 
-  // Signup form (front-end only — wire to a real endpoint later)
+  // Formulaire d'inscription → Google Sheets.
+  // Collez ici l'URL de l'application Web Apps Script (se termine par /exec).
+  // Tant qu'elle est vide, le formulaire affiche le message sans rien enregistrer.
+  var SHEET_URL = "";
+
   var form = document.getElementById("signupForm");
   var note = document.getElementById("signupNote");
+  var button = form.querySelector("button[type=submit]");
+
+  function setNote(text, success) {
+    note.textContent = text;
+    note.classList.toggle("is-success", !!success);
+  }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var valid = true;
@@ -101,13 +112,35 @@
       if (!ok) valid = false;
     });
     if (!valid) {
-      note.classList.remove("is-success");
-      note.textContent = "Merci d’indiquer votre nom et une adresse e-mail valide.";
+      setNote("Merci d’indiquer votre nom et une adresse e-mail valide.");
       return;
     }
+
     var name = form.elements.name.value.trim().split(" ")[0];
-    note.classList.add("is-success");
-    note.textContent = "Bienvenue dans la tribu, " + name + " ! Nous vous enverrons un horaire de séance par e-mail sous 24 h.";
-    form.reset();
+    function done() {
+      setNote("Bienvenue dans la tribu, " + name + " ! Nous vous enverrons un horaire de séance par e-mail sous 24 h.", true);
+      form.reset();
+    }
+
+    if (!SHEET_URL) {
+      console.warn("WILD GYM : SHEET_URL est vide, l’inscription n’est pas enregistrée.");
+      done();
+      return;
+    }
+
+    button.disabled = true;
+    setNote("Envoi en cours…");
+    // Apps Script ne renvoie pas les en-têtes CORS : on envoie en "no-cors"
+    // (réponse illisible, mais la ligne est bien ajoutée au tableur).
+    fetch(SHEET_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: new URLSearchParams(new FormData(form))
+    })
+      .then(done)
+      .catch(function () {
+        setNote("Oups, l’envoi a échoué. Vérifiez votre connexion et réessayez.");
+      })
+      .then(function () { button.disabled = false; });
   });
 })();

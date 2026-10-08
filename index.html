@@ -243,6 +243,8 @@
               <option>Surprenez-moi</option>
             </select>
           </label>
+          <!-- Champ piège anti-spam : invisible pour les humains -->
+          <input type="text" name="website" class="signup__trap" tabindex="-1" autocomplete="off" aria-hidden="true">
           <button type="submit" class="btn btn--block">Rejoindre la tribu</button>
           <p class="signup__note" id="signupNote" role="status" aria-live="polite">Sans engagement. Sans carte bancaire. Venez, c’est tout.</p>
         </form>

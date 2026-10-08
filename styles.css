@@ -638,6 +638,8 @@ a { color: inherit; }
 .signup select:focus { border-color: var(--moss); box-shadow: 0 0 0 4px rgba(107, 127, 62, .3); }
 .signup input.is-invalid { border-color: #c0573a; }
 .signup .btn { margin-top: .6rem; }
+.signup .btn:disabled { opacity: .6; cursor: wait; transform: none; }
+.signup__trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .signup__note { margin: 1rem 0 0; font-size: .85rem; color: var(--sand-300); text-align: center; }
 .signup__note.is-success { color: #c6d79a; font-weight: 700; }
 
