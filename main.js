@@ -21,7 +21,7 @@
   function setMenu(open) {
     links.classList.toggle("is-open", open);
     toggle.setAttribute("aria-expanded", String(open));
-    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    toggle.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
     document.body.style.overflow = open ? "hidden" : "";
   }
   toggle.addEventListener("click", function () {
@@ -77,7 +77,7 @@
   document.querySelectorAll(".tile").forEach(function (tile) {
     tile.tabIndex = 0;
     tile.setAttribute("role", "button");
-    tile.setAttribute("aria-label", "View image: " + tile.querySelector("figcaption").textContent);
+    tile.setAttribute("aria-label", "Voir l’image : " + tile.querySelector("figcaption").textContent);
     tile.addEventListener("click", function () { openLightbox(tile); });
     tile.addEventListener("keydown", function (e) {
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(tile); }
@@ -102,12 +102,12 @@
     });
     if (!valid) {
       note.classList.remove("is-success");
-      note.textContent = "Please add your name and a valid email.";
+      note.textContent = "Merci d’indiquer votre nom et une adresse e-mail valide.";
       return;
     }
     var name = form.elements.name.value.trim().split(" ")[0];
     note.classList.add("is-success");
-    note.textContent = "Welcome to the tribe, " + name + ". We’ll email you a session time within 24h.";
+    note.textContent = "Bienvenue dans la tribu, " + name + " ! Nous vous enverrons un horaire de séance par e-mail sous 24 h.";
     form.reset();
   });
 })();
